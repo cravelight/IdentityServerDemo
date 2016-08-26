@@ -15,12 +15,12 @@ namespace Demo.AuthService.Web.MoveMe
             return new List<InMemoryUser> {
             new InMemoryUser {
                 Subject = "1",
-                Username = "mark.gidman",
+                Username = "demo.user",
                 Password = "Password123!",
                 Claims = new List<Claim> {
-                    new Claim(Constants.ClaimTypes.GivenName, "Mark"),
-                    new Claim(Constants.ClaimTypes.FamilyName, "Gidman"),
-                    new Claim(Constants.ClaimTypes.Email, "cravelight@gmail.com"),
+                    new Claim(Constants.ClaimTypes.GivenName, "Demo"),
+                    new Claim(Constants.ClaimTypes.FamilyName, "User"),
+                    new Claim(Constants.ClaimTypes.Email, "demo.user@example.com"),
                     new Claim(Constants.ClaimTypes.Role, "Admin")
                 }
             }

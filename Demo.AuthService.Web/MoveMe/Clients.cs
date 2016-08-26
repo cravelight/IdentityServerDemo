@@ -42,7 +42,7 @@ namespace Demo.AuthService.Web.MoveMe
                     // Otherwise the user will stay on the default logout success screen within the Identity Server.
                     PostLogoutRedirectUris = new List<string> {"https://localhost:44304/"},
 
-                    // ScopeRestrictions is a list of OpenID Connect scopes allowed to be requested and returned to this client.
+                    // AllowedScopes is a list of OpenID Connect scopes allowed to be requested and returned to this client.
                     // We can take advantage of the predefined enums provided by Identity Server here.
                     // Not setting this allows all scopes to be retrieved (defaults to an empty list).
                     AllowedScopes = new List<string>
