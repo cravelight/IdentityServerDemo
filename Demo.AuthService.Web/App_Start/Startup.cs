@@ -40,7 +40,7 @@ namespace Demo.AuthService.Web
                 {
                     coreApp.UseIdentityServer(new IdentityServerOptions
                     {
-                        SiteName = "Standalone Identity Server",
+                        SiteName = "Authentication Service Demo",
                         SigningCertificate = Cert.Load(),
                         Factory = new IdentityServerServiceFactory()
                             .UseInMemoryClients(Clients.Get())
