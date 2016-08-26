@@ -2,15 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
 using Demo.AuthService.Web.MoveMe;
 using IdentityServer3.Core.Configuration;
+using Microsoft.Owin;
 using Owin;
 
+[assembly: OwinStartup(typeof(Demo.AuthService.Web.Startup))]
 namespace Demo.AuthService.Web
 {
     public sealed class Startup
     {
         public void Configuration(IAppBuilder app)
+        {
+            DoTypicalMvcAndWebApiApplicationStart();
+            BootstrapIdentityServer(app);
+        }
+
+        /// <summary>
+        /// Since we need OWIN for IdentityServer anyway we might as well use OWIN Startup 
+        /// to set up our normal Application_Start stuff. This gets rid of our need for a 
+        /// global.asax. The only downside is that without a global.asax we don't have access
+        /// to standard application events like session start/end. However, I don't think we 
+        /// care since we'd really like to not have to use sessions anyway.
+        /// </summary>
+        private void DoTypicalMvcAndWebApiApplicationStart()
+        {
+            AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+
+        private void BootstrapIdentityServer(IAppBuilder app)
         {
             /* Here we are using the InMemory Client Store, Scope Store and User Service. 
              * These are meant for development use only. In production you would see a 
@@ -50,5 +79,7 @@ namespace Demo.AuthService.Web
                     });
                 });
         }
+
+
     }
 }
