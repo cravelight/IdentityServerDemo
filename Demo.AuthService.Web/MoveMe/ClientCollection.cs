@@ -14,10 +14,11 @@ namespace Demo.AuthService.Web.MoveMe
         {
             return new List<Client>
             {
-                new ImplicitClient("sampleimplicitclient", "Implicit Client Sample",
-                    new List<string> {"https://localhost:44310/ImplicitFlowAccount/SignInCallback"}, // redirect uris
-                    new List<string> {"https://localhost:44310"},                                    // post logout uris
-                    new List<string> {                                                               // allowed scopes
+                new ImplicitClient("implicitdemo", "Implicit Client Demo",
+                    new List<string> {"http://localhost:50134/"}, // redirect uris
+//                    new List<string> {"http://localhost:50134/Account/SignInCallback"}, // redirect uris
+                    new List<string> {"http://localhost:50134/"},                       // post logout uris
+                    new List<string> {                                                  // allowed scopes
                         Constants.StandardScopes.OpenId,
                         Constants.StandardScopes.Profile,
                         Constants.StandardScopes.Email

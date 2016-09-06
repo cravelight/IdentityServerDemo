@@ -29,39 +29,7 @@ namespace Demo.AuthService.Web
         {
             DoTypicalMvcAndWebApiApplicationStart();
 
-            var applicationBaseUri = GetBaseUriFromOwinContext(app);
             var identityServerEndpoint = "/identity";
-
-            // Paths shared by all flows
-            var identityServerUri = applicationBaseUri + identityServerEndpoint;
-
-            var clients = new List<Client>();
-
-            // Configure what we need to demonstrate an auth consumer using the Implicit flow.
-            // Note, if you are putting this in a clean MVC project, you'll need the following nuget packages:
-            // - install-package Microsoft.Owin.Host.SystemWeb
-            // - install-package Microsoft.Owin.Security.Cookies
-            // - install-package System.IdentityModel.Tokens.Jwt
-            //var implicitFlowAuthorizationUri = identityServerUri + @"/connect/authorize";
-            //var implicitFlowCallbackUri = applicationBaseUri + @"/ImplicitFlowAccount/SignInCallback";
-            //clients.Add(new ImplicitClient(
-            //    "sampleimplicitclient", 
-            //    "Implicit Client Sample",
-            //    new List<string> {implicitFlowCallbackUri}, // redirect uris
-            //    new List<string> {applicationBaseUri}, // post logout uris
-            //    new List<string>
-            //    {   // allowed scopes
-            //        Constants.StandardScopes.OpenId,
-            //        Constants.StandardScopes.Profile,
-            //        Constants.StandardScopes.Email
-            //    }));
-            //JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
-            app.UseCookieAuthentication(new CookieAuthenticationOptions { });
-            app.UseCookieAuthentication(new CookieAuthenticationOptions { CookieName = "TempCookie" });
-
-
-
-
 
 
             // This sets up the resource server side of things
@@ -79,14 +47,14 @@ namespace Demo.AuthService.Web
 
             // side note - the name of this method is wrong - we should say what flow we are
             // setting up for.
-            var redirectUri = applicationBaseUri;
+            //var redirectUri = applicationBaseUri;
             //HybridFlowClientSupport(app, identityServerUri, redirectUri);
 
 
 
 
             // This sets up the Auth Server and Token Service side of things.
-            BootstrapIdentityServer(app, identityServerEndpoint, clients);
+            BootstrapIdentityServer(app, identityServerEndpoint);
         }
 
 
@@ -103,21 +71,6 @@ namespace Demo.AuthService.Web
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-        }
-
-
-        private string GetBaseUriFromOwinContext(IAppBuilder app)
-        {
-            // http://stackoverflow.com/a/33085913/121466
-            var currentUri = "";
-            app.Use((context, next) => {
-                currentUri = context.Request.Uri.ToString(); //Get base URL
-                return next().ContinueWith(task =>
-                {
-                    context.Response.WriteAsync(" FINISHED RETRIEVING CURRENT URL ");
-                });
-            });
-            return currentUri;
         }
 
 
@@ -150,7 +103,7 @@ namespace Demo.AuthService.Web
         /// jwks endpoint to confirm the certificate: https://localhost:44310/identity/.well-known/jwks
         /// 
         /// </summary>
-        private void BootstrapIdentityServer(IAppBuilder app, string identityServerEndpoint, IEnumerable<Client> clients)
+        private void BootstrapIdentityServer(IAppBuilder app, string identityServerEndpoint)
         {
             app.Map(
                 identityServerEndpoint,

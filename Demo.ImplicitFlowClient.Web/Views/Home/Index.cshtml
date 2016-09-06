@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div>
+    <h1>Implicit Flow</h1>
+    <p>
+        <blockquote>
+            The implicit flow requests tokens without explicit client authentication, instead using the redirect URI to verify the client identity.
+            Because of this, long lived tokens are not allowed. From the middleware's point of view this is the simplest to implement, as it only 
+            needs to redirect to the user the location of the OpenID Connect provider.
+            This flow obtains all of its tokens from the Authorization endpoint.
+        </blockquote>
+    </p>
+    <p><a href="https://www.scottbrady91.com/OpenID-Connect/OpenID-Connect-Flows">Learn more where that quote came from &raquo;</a></p>
+
+
+    <hr/>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>Congrats! We're logged in. Here's our claims:</p>
+        <p>
+            <dl>
+                @foreach (var claim in System.Security.Claims.ClaimsPrincipal.Current.Claims)
+                {
+                    <dt>@claim.Type</dt>
+                    <dd>@claim.Value</dd>
+                }
+            </dl>
+        </p>
+    }
+    else
+    {
+        <p>We're not logged in. Try signing in using these credentials:</p>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Username</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" value="demo.user">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" value="Password123!">
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
