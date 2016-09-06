@@ -16,12 +16,17 @@ namespace Demo.AuthService.Web.MoveMe
         {
             return new List<Scope>
             {
-                StandardScopes.OpenId,
-                StandardScopes.Profile,
+                //StandardScopes.AllClaims,
+                //StandardScopes.Address,
                 StandardScopes.Email,
+                StandardScopes.OfflineAccess,
+                StandardScopes.OpenId,
+                //StandardScopes.Phone,
+                StandardScopes.Profile,
                 StandardScopes.Roles,
-                StandardScopes.OfflineAccess
             };
         }
     }
 }
+
+
