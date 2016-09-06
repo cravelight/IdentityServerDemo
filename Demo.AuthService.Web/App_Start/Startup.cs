@@ -18,6 +18,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using Serilog;
 
 [assembly: OwinStartup(typeof(Demo.AuthService.Web.Startup))]
 namespace Demo.AuthService.Web
@@ -28,9 +29,6 @@ namespace Demo.AuthService.Web
         public void Configuration(IAppBuilder app)
         {
             DoTypicalMvcAndWebApiApplicationStart();
-
-            var identityServerEndpoint = "/identity";
-
 
             // This sets up the resource server side of things
             // the part where someone tries to connect with a 
@@ -54,7 +52,7 @@ namespace Demo.AuthService.Web
 
 
             // This sets up the Auth Server and Token Service side of things.
-            BootstrapIdentityServer(app, identityServerEndpoint);
+            BootstrapIdentityServer(app, DemoConstants.IdentityServerIdentityEndpoint);
         }
 
 
@@ -105,6 +103,12 @@ namespace Demo.AuthService.Web
         /// </summary>
         private void BootstrapIdentityServer(IAppBuilder app, string identityServerEndpoint)
         {
+            //https://identityserver.github.io/Documentation/docsv2/configuration/logging.html
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo
+                .LiterateConsole(outputTemplate: "{Timestamp:HH:MM} [{Level}] ({Name:l}){NewLine} {Message}{NewLine}{Exception}")
+                .CreateLogger();
+
             app.Map(
                 identityServerEndpoint,
                 coreApp =>
@@ -112,9 +116,8 @@ namespace Demo.AuthService.Web
                     coreApp.UseIdentityServer(new IdentityServerOptions
                     {
                         SiteName = "Authentication Service Demo",
-                        SigningCertificate = DevelopmentCert.Load(),
+                        SigningCertificate = DemoConstants.GetX509Certificate2(),
                         Factory = new IdentityServerServiceFactory()
-                            //.UseInMemoryClients(clients)
                             .UseInMemoryClients(ClientCollection.Get())
                             .UseInMemoryScopes(Scopes.Get())
                             .UseInMemoryUsers(Users.Get()),

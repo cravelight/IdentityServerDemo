@@ -23,8 +23,8 @@ namespace Demo.AuthService.Web.MoveMe.Clients
             ClientName = clientName;
             RedirectUris = redirectUriList;
             PostLogoutRedirectUris = postLogoutRedirectUriList;
-            AllowAccessToAllScopes = true;
-            //AllowedScopes = allowedScopes ?? new List<string>();
+            //AllowAccessToAllScopes = true;
+            AllowedScopes = allowedScopes ?? new List<string>();
 
             Enabled = true;
             Flow = Flows.Implicit;
